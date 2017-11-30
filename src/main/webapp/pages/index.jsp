@@ -587,22 +587,24 @@ span:nth-child(7) {
   <label class="button button--2" for="retrigger--2">PLAY AGAIN</label>
 </div-->
 <div class="logo"><span>N </span><span>E </span><span>T</span><span>F</span><span>L</span><span>I</span><span>X</span></div>
-<div id="page">
-  <div id="div_1">
-    <div id="div_2">
-      <b><label class="labelInput">Username:</label></b>
-      <input class="input-login" type="text" name="username" />
-    </div>
-    <div id="div_3">
-      <b><label class="labelInput">Password:</label></b>
-      <input class="input-login" type="password" name="password" />
-    </div>
-    <div id="button-group">
-      <button id="login-btn">Login</button>
-      <button id="recovery-btn">Recupera Password</button>
+<form action="/login">
+  <div id="page">
+    <div id="div_1">
+      <div id="div_2">
+        <b><label class="labelInput">Username:</label></b>
+        <input class="input-login" type="text" name="username" />
+      </div>
+      <div id="div_3">
+        <b><label class="labelInput">Password:</label></b>
+        <input class="input-login" type="password" name="password" />
+      </div>
+      <div id="button-group">
+        <button id="login-btn">Login</button>
+        <button id="recovery-btn">Recupera Password</button>
+      </div>
     </div>
   </div>
-</div>
+</form>
   
 </body>
 </html>
