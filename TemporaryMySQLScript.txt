@@ -1,0 +1,19 @@
+CREATE TABLE `payments_log` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `username` varchar(45) DEFAULT NULL,
+  `quantity` decimal(10,2) DEFAULT NULL,
+  `payment_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `users` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) DEFAULT NULL,
+  `surname` varchar(45) DEFAULT NULL,
+  `register_date` varchar(45) NOT NULL,
+  `delete_date` varchar(45) DEFAULT NULL,
+  `username` varchar(45) DEFAULT NULL,
+  `mail` varchar(45) DEFAULT NULL,
+  `phone` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
