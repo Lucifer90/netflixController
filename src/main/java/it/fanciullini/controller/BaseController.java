@@ -42,7 +42,7 @@ public class BaseController {
 		return VIEW_INDEX;
 	}
 
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String firstLogin(@RequestParam String username, @RequestParam String password, ModelMap model) {
 
 		List<User> user = userService.findByUsernameAndPassword(username, password);
@@ -50,6 +50,7 @@ public class BaseController {
 			User selectedUser = user.get(0);
 			selectedUser.setPassword("");
 			model.addAttribute("user", selectedUser.getName());
+			model.addAttribute("usersList", userService.list());
 			return VIEW_WELCOME_PAGE;
 		} else {
 			return LOGIN_ERROR;

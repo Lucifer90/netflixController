@@ -1,10 +1,10 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="../css/styles.css" />
-  <title>netfix logo animation CSS</title>
-  
+  <link rel="stylesheet" type="text/css" href="<c:url value='/css/styles.css' />"/>
+  <title>Netflix Controller</title>
   
   
       <style>
@@ -587,7 +587,7 @@ span:nth-child(7) {
   <label class="button button--2" for="retrigger--2">PLAY AGAIN</label>
 </div-->
 <div class="logo"><span>N </span><span>E </span><span>T</span><span>F</span><span>L</span><span>I</span><span>X</span></div>
-<form action="/login">
+<form action="/login" method="post">
   <div id="page">
     <div id="div_1">
       <div id="div_2">
