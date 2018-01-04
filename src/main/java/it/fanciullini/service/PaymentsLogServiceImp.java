@@ -1,25 +1,26 @@
-package it.fanciullini.dao;
+package it.fanciullini.service;
 
+import it.fanciullini.dao.PaymentsLogDao;
 import it.fanciullini.model.PaymentsLog;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.TypedQuery;
 import java.util.List;
 
-public class PaymentsLogDaoImp implements PaymentsLogDao {
+@Service
+public class PaymentsLogServiceImp implements PaymentsLogService {
 
     @Autowired
-    private SessionFactory sessionFactory;
+    private PaymentsLogDao paymentsLogDao;
 
-    @Override
+    @Transactional
     public void save(PaymentsLog paymentsLog) {
-        sessionFactory.getCurrentSession().save(paymentsLog);
+        paymentsLogDao.save(paymentsLog);
     }
 
-    @Override
+    @Transactional
     public List<PaymentsLog> list() {
-        TypedQuery<PaymentsLog> query = sessionFactory.getCurrentSession().createQuery("from User");
-        return query.getResultList();
+        return paymentsLogDao.list();
     }
 }

@@ -1,12 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="it.fanciullini.model.User" %>
-<%@ page import="java.util.ArrayList" %><%--
-  Created by IntelliJ IDEA.
-  User: Luca
-  Date: 30/11/2017
-  Time: 22:36
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="it.fanciullini.model.PaymentsLog" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -36,5 +31,32 @@
     <%}%>
 </table>
 <h1>Lista Pagamenti</h1>
+<table id="payments_log">
+    <tr>
+        <th>Id</th>
+        <th>Pagante</th>
+        <th>Spesa</th>
+        <th>Data Pagamento</th>
+        <th>Inizio Validità</th>
+        <th>Fine Validità</th>
+        <th>Stato Pagamento</th>
+    </tr>
+    <%
+        ArrayList<PaymentsLog> paymentsLogList=(ArrayList<PaymentsLog>) request.getAttribute("paymentsLogList");
+        for (PaymentsLog paymentsLog: paymentsLogList) {
+    %>
+        <tr>
+            <td><%=paymentsLog.getId()%></td>
+            <td><%=paymentsLog.getUsername()%></td>
+            <td><%=paymentsLog.getQuantity()%></td>
+            <td><%=paymentsLog.getPaymentDate()%></td>
+            <td><%=paymentsLog.getStartServicePeriod()%></td>
+            <td><%=paymentsLog.getEndServicePeriod()%></td>
+            <td><%=paymentsLog.getPayed()%></td>
+        </tr>
+    <%}%>
+</table>
+
+
 </body>
 </html>

@@ -1,4 +1,10 @@
 package it.fanciullini.dao;
 
-public class paymentsLogDao {
+import it.fanciullini.model.PaymentsLog;
+
+import java.util.List;
+
+public interface PaymentsLogDao {
+    void save(PaymentsLog paymentsLog);
+    List<PaymentsLog> list();
 }

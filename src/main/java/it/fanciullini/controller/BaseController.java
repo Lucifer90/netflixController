@@ -1,6 +1,7 @@
 package it.fanciullini.controller;
 
 import it.fanciullini.model.User;
+import it.fanciullini.service.PaymentsLogService;
 import it.fanciullini.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,9 @@ public class BaseController {
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private PaymentsLogService paymentsLogService;
 
 	private static int counter = 0;
 	private static final String VIEW_INDEX = "index";
@@ -51,6 +55,7 @@ public class BaseController {
 			selectedUser.setPassword("");
 			model.addAttribute("user", selectedUser.getName());
 			model.addAttribute("usersList", userService.list());
+			model.addAttribute("paymentsLogList", paymentsLogService.list());
 			return VIEW_WELCOME_PAGE;
 		} else {
 			return LOGIN_ERROR;
