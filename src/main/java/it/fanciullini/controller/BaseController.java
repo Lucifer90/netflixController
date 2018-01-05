@@ -1,12 +1,11 @@
 package it.fanciullini.controller;
 
-import it.fanciullini.model.User;
-import it.fanciullini.service.PaymentsLogService;
-import it.fanciullini.service.UserService;
+import it.fanciullini.data.entity.User;
+import it.fanciullini.data.service.PaymentsLogService;
+import it.fanciullini.data.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @Controller
+@RequestMapping(value = "/home")
 public class BaseController {
 
 	@Autowired
@@ -27,24 +27,6 @@ public class BaseController {
 	private static final String VIEW_WELCOME_PAGE = "welcome";
 	private static final String LOGIN_ERROR = "login_error";
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String welcome(ModelMap model) {
-
-		model.addAttribute("message", "Welcome");
-		model.addAttribute("counter", ++counter);
-
-		// Spring uses InternalResourceViewResolver and return back index_fanciu.jsp
-		return VIEW_INDEX;
-
-	}
-
-	@RequestMapping(value = "/{name}", method = RequestMethod.GET)
-	public String welcomeName(@PathVariable String name, ModelMap model) {
-
-		model.addAttribute("message", "Welcome " + name);
-		model.addAttribute("counter", ++counter);
-		return VIEW_INDEX;
-	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String firstLogin(@RequestParam String username, @RequestParam String password, ModelMap model) {
@@ -54,8 +36,8 @@ public class BaseController {
 			User selectedUser = user.get(0);
 			selectedUser.setPassword("");
 			model.addAttribute("user", selectedUser.getName());
-			model.addAttribute("usersList", userService.list());
-			model.addAttribute("paymentsLogList", paymentsLogService.list());
+			model.addAttribute("usersList", userService.getList());
+			model.addAttribute("paymentsLogList", paymentsLogService.getList());
 			return VIEW_WELCOME_PAGE;
 		} else {
 			return LOGIN_ERROR;

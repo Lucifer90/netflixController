@@ -1,0 +1,51 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{../../css/styles.css}" />
+    <title>Benvenuto!</title>
+</head>
+<body>
+<h1>Lista Utenti</h1>
+<table id="users" class="table-main">
+    <tr>
+        <th>Nome</th>
+        <th>Cognome</th>
+        <th>Mail</th>
+        <th>Data Registrazione</th>
+    </tr>
+    <th:block th:each="user : ${usersList}">
+        <tr>
+            <td th:text="${user.name}"></td>
+            <td th:text="${user.surname}"></td>
+            <td th:text="${user.mail}"></td>
+            <td th:text="${user.registerDate}"></td>
+        </tr>
+    </th:block>
+</table>
+<h1>Lista Pagamenti</h1>
+<table id="payments_log" class="table-main">
+    <tr>
+        <th>Id</th>
+        <th>Pagante</th>
+        <th>Spesa</th>
+        <th>Data Pagamento</th>
+        <th>Inizio Validità</th>
+        <th>Fine Validità</th>
+        <th>Stato Pagamento</th>
+    </tr>
+    <th:block th:each="paymentsLog : ${paymentsLogList}">
+        <tr>
+            <td th:text="${paymentsLog.getId()}"></td>
+            <td th:text="${paymentsLog.getUsername()}"></td>
+            <td th:text="${paymentsLog.getQuantity()}"></td>
+            <td th:text="${paymentsLog.getPaymentDate()}"></td>
+            <td th:text="${paymentsLog.getStartServicePeriod()}"></td>
+            <td th:text="${paymentsLog.getEndServicePeriod()}"></td>
+            <td th:text="${paymentsLog.getPayed()}"></td>
+        </tr>
+    </th:block>
+</table>
+
+
+</body>
+</html>

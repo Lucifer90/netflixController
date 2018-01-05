@@ -1,7 +1,7 @@
 package it.fanciullini.controller;
 
-import it.fanciullini.model.User;
-import it.fanciullini.service.UserService;
+import it.fanciullini.data.entity.User;
+import it.fanciullini.data.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +21,7 @@ public class UserController {
 
 	@GetMapping("/all")
 	public String userForm(Locale locale, Model model) {
-		model.addAttribute("users", userService.list());
+		model.addAttribute("users", userService.getList());
 		return "editUsers";
 	}
 	
@@ -34,7 +34,7 @@ public class UserController {
 	public String saveUser(@ModelAttribute("user") @Valid User user, BindingResult result, Model model) {
 
 		if (result.hasErrors()) {
-			model.addAttribute("users", userService.list());
+			model.addAttribute("users", userService.getList());
 			return "editUsers";
 		}
 
