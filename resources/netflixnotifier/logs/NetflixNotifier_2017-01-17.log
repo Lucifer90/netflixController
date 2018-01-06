@@ -1,0 +1,3 @@
+2017-01-17 01:12:42,667 - INFO - mainCaller.py:378 -   <module>()- Inizio controllo
+2017-01-17 01:12:42,667 - INFO - mainCaller.py:137 - setup_data()- Livello di warning su warning_one: Credito residuo sufficente
+2017-01-17 01:12:50,448 - INFO - mainCaller.py:139 - setup_data()- Credito:15.01 Data di scadenza: 2017-03-12 00:00:00
