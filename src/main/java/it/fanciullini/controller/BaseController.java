@@ -37,7 +37,7 @@ public class BaseController {
 			selectedUser.setPassword("");
 			model.addAttribute("user", selectedUser.getName());
 			model.addAttribute("usersList", userService.getFilteredList(selectedUser.getRole()));
-			model.addAttribute("paymentsLogList", paymentsLogService.getList());
+			model.addAttribute("paymentsLogList", paymentsLogService.getFilteredList());
 			return VIEW_WELCOME_PAGE;
 		} else {
 			return LOGIN_ERROR;

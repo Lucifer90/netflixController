@@ -4,12 +4,13 @@ import it.fanciullini.utility.Roles;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.*;
 
 @Data
 @Entity
 @Table(name="users")
-public class User
+public class User implements Serializable
 {
 
     public User() {

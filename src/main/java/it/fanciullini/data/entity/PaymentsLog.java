@@ -1,26 +1,38 @@
 package it.fanciullini.data.entity;
 
+import it.fanciullini.utility.StatusEnum;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
 @Entity(name = "PaymentsLog")
 @Table(name = "payments_log")
-public class PaymentsLog {
+public class PaymentsLog implements Serializable
+{
+
+    public PaymentsLog(){}
+
+    public PaymentsLog(PaymentsLog paymentsLog){
+        this.id = paymentsLog.getId();
+        this.user = paymentsLog.getUser();
+        this.quantity = paymentsLog.getQuantity();
+        this.paymentDate = paymentsLog.getPaymentDate();
+        this.startServicePeriod = paymentsLog.getStartServicePeriod();
+        this.endServicePeriod = paymentsLog.getEndServicePeriod();
+        this.payed = paymentsLog.getPayed();
+    }
 
     @Id
     @GeneratedValue
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "username")
-    private String username;
+    @ManyToOne(cascade = CascadeType.ALL , fetch = FetchType.LAZY)
+    @JoinColumn(name = "username", referencedColumnName = "username")
+    private User user;
 
     @Column(name = "quantity")
     private Double quantity;
@@ -35,5 +47,5 @@ public class PaymentsLog {
     private Date endServicePeriod;
 
     @Column(name = "payed")
-    private Boolean payed;
+    private StatusEnum payed;
 }

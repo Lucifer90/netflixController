@@ -61,7 +61,7 @@ public class UserService
         for(User usr : tmp){
             if(role.hasPermission(usr.getRole())) {
                 UsersResponse user = new UsersResponse(usr);
-                user.setImportTotal(paymentsLogService.importTotalByUser(usr.getUsername()));
+                user.setImportTotal(paymentsLogService.importTotalByUser(usr));
                 user.setPassword("");
                 usersToReturn.add(user);
             }

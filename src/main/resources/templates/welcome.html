@@ -8,8 +8,8 @@
 <body>
 <h1>Grafico Pagamenti</h1>
 
-
-<canvas id="myBarChart" width="600" height="300"></canvas>
+<div style="max-width: 100%; max-height: 100%">
+<canvas id="myBarChart" width="600" height="200"></canvas>
 <script th:inline="javascript">
     // Definisco i dati da mostrare nel grafico
 
@@ -46,6 +46,7 @@
     });
 
 </script>
+</div>
 
 <h1>Lista Utenti</h1>
 <table id="users" class="table-main">
@@ -69,7 +70,6 @@
 <h1>Lista Pagamenti</h1>
 <table id="payments_log" class="table-main">
     <tr>
-        <th>Id</th>
         <th>Pagante</th>
         <th>Spesa</th>
         <th>Data Pagamento</th>
@@ -79,13 +79,12 @@
     </tr>
     <th:block th:each="paymentsLog : ${paymentsLogList}">
         <tr>
-            <td th:text="${paymentsLog.getId()}"></td>
-            <td th:text="${paymentsLog.getUsername()}"></td>
+            <td th:text="${paymentsLog.getPagante()}"></td>
             <td th:text="${paymentsLog.getQuantity()}"></td>
             <td th:text="${#dates.format(paymentsLog.getPaymentDate(), 'dd MMM yyyy HH:mm')}"></td>
             <td th:text="${#dates.format(paymentsLog.getStartServicePeriod(), 'dd MMM yyyy HH:mm')}"></td>
             <td th:text="${#dates.format(paymentsLog.getEndServicePeriod(), 'dd MMM yyyy HH:mm')}"></td>
-            <td th:style="${paymentsLog.getPayed() == true } ? 'background-color: green;' : 'background-color: red;'" ></td>
+            <td th:style="${paymentsLog.getPayed().getDbValue() == 0 } ? 'background-color: green;' : (${paymentsLog.getPayed().getDbValue() == 1 } ? 'background-color: white;' : 'background-color: orange;')" ></td>
         </tr>
     </th:block>
 </table>
