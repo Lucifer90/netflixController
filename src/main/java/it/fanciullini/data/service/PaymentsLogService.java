@@ -17,6 +17,11 @@ public class PaymentsLogService
         return paymentsLogRepository.getList();
     }
 
+    public Double importTotalByUser(String username) {
+        Double total = paymentsLogRepository.importTotalByUser(username);
+        return total != null ? total : new Double(0);
+    }
+
     public PaymentsLog save(PaymentsLog paymentsLog){
         return paymentsLogRepository.save(paymentsLog);
     }

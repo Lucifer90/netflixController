@@ -1,5 +1,6 @@
 package it.fanciullini.data.entity;
 
+import it.fanciullini.utility.Roles;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -11,8 +12,25 @@ import java.util.*;
 public class User
 {
 
+    public User() {
+
+    }
+
+    public User (User user){
+        this.id = user.getId();
+        this.username = user.getUsername();
+        this.mail = user.getMail();
+        this.name = user.getName();
+        this.surname = user.getSurname();
+        this.password = user.getPassword();
+        this.registerDate = user.getRegisterDate();
+        this.deleteDate = user.getDeleteDate();
+        this.phone = user.getPhone();
+        this.role = user.getRole();
+    }
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
 
@@ -39,5 +57,8 @@ public class User
 
     @Column(name = "phone")
     private String phone;
+
+    @Column(name="role")
+    private Roles role;
 
 }

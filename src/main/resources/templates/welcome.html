@@ -2,9 +2,48 @@
 <head>
     <meta charset="UTF-8" />
     <link rel="stylesheet" type="text/css" th:href="@{../../css/styles.css}" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
     <title>Benvenuto!</title>
 </head>
 <body>
+<h1>Grafico Pagamenti</h1>
+
+
+<canvas id="myBarChart" width="600" height="300"></canvas>
+<script th:inline="javascript">
+    // Definisco i dati da mostrare nel grafico
+
+    /*<![CDATA[*/
+    var users = /*[[${usersList}]]*/ 'User Name';
+    var userLabels = [];
+    var importLabels = [];
+    for (i = 0; i < users.length; i++) {
+        userLabels[i] = users[i].name+" "+users[i].surname;
+        importLabels[i] = users[i].importTotal;
+    }
+    /*]]>*/
+
+    var ctx = document.getElementById("myBarChart").getContext("2d");
+    var myBarChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: userLabels,
+            datasets: [{
+                label: 'Importo Totale Pagato',
+                data: importLabels,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 206, 86, 0.6)',
+                    'rgba(75, 192, 192, 0.6)'
+                ]
+            }]
+        }
+    });
+    document.getElementById("myBarChart").height = 20;
+
+</script>
+
 <h1>Lista Utenti</h1>
 <table id="users" class="table-main">
     <tr>
@@ -12,13 +51,15 @@
         <th>Cognome</th>
         <th>Mail</th>
         <th>Data Registrazione</th>
+        <th>Importo totale pagato</th>
     </tr>
     <th:block th:each="user : ${usersList}">
         <tr>
             <td th:text="${user.name}"></td>
             <td th:text="${user.surname}"></td>
             <td th:text="${user.mail}"></td>
-            <td th:text="${user.registerDate}"></td>
+            <td th:text="${#dates.format(user.getRegisterDate(), 'dd MMM yyyy HH:mm')}"></td>
+            <td th:text="${user.importTotal}"></td>
         </tr>
     </th:block>
 </table>
@@ -38,14 +79,15 @@
             <td th:text="${paymentsLog.getId()}"></td>
             <td th:text="${paymentsLog.getUsername()}"></td>
             <td th:text="${paymentsLog.getQuantity()}"></td>
-            <td th:text="${paymentsLog.getPaymentDate()}"></td>
-            <td th:text="${paymentsLog.getStartServicePeriod()}"></td>
-            <td th:text="${paymentsLog.getEndServicePeriod()}"></td>
-            <td th:text="${paymentsLog.getPayed()}"></td>
+            <td th:text="${#dates.format(paymentsLog.getPaymentDate(), 'dd MMM yyyy HH:mm')}"></td>
+            <td th:text="${#dates.format(paymentsLog.getStartServicePeriod(), 'dd MMM yyyy HH:mm')}"></td>
+            <td th:text="${#dates.format(paymentsLog.getEndServicePeriod(), 'dd MMM yyyy HH:mm')}"></td>
+            <td th:style="${paymentsLog.getPayed() == true } ? 'background-color: green;' : 'background-color: red;'" ></td>
         </tr>
     </th:block>
 </table>
-
-
 </body>
 </html>
+
+
+

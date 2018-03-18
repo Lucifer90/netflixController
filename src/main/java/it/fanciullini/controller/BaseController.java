@@ -36,7 +36,7 @@ public class BaseController {
 			User selectedUser = user.get(0);
 			selectedUser.setPassword("");
 			model.addAttribute("user", selectedUser.getName());
-			model.addAttribute("usersList", userService.getList());
+			model.addAttribute("usersList", userService.getFilteredList(selectedUser.getRole()));
 			model.addAttribute("paymentsLogList", paymentsLogService.getList());
 			return VIEW_WELCOME_PAGE;
 		} else {

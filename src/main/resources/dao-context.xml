@@ -50,7 +50,8 @@
             <props>
                 <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
                 <prop key="hibernate.hbm2ddl.import_files">${hibernate.hbm2ddl.import_files}</prop>
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+                <prop key="hibernate.dialect">org.mariadb.jdbc.Driver</prop>
+                <!--prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop-->
             </props>
         </property>
     </bean>

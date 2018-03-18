@@ -1,4 +1,5 @@
 package it.fanciullini.utility;
 
-public interface EnumConverter {
+public interface EnumConverter<T> {
+    public T getDbValue();
 }
