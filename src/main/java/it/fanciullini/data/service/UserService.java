@@ -23,7 +23,6 @@ public class UserService
     @Autowired
     PaymentsLogService paymentsLogService;
 
-    @Transactional("txManagerAnag")
     public User findByUserName(String userName)
             throws DataException
     {
@@ -63,6 +62,7 @@ public class UserService
                 UsersResponse user = new UsersResponse(usr);
                 user.setImportTotal(paymentsLogService.importTotalByUser(usr));
                 user.setPassword("");
+                user.setMail("");
                 usersToReturn.add(user);
             }
         }

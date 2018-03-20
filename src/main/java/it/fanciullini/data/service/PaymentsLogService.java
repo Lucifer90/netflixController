@@ -25,15 +25,34 @@ public class PaymentsLogService
     @Autowired
     private PaymentsLogRepository paymentsLogRepository;
 
-    public Page<PaymentsLog> getList(int page, int limit){
-        Pageable pageRequest = new PageRequest(page, limit);;
-        return paymentsLogRepository.getList(pageRequest);
+    public PaymentsLog findById(Long id) {
+        return paymentsLogRepository.findById(id);
+    }
+
+    private Page<PaymentsLog> getList(Pageable pageRequest){
+        Page<PaymentsLog> paymentsLogs = paymentsLogRepository.getList(pageRequest);
+        if (paymentsLogs.getContent().size()==0){
+            throw new ArrayIndexOutOfBoundsException();
+            //pageRequest = new PageRequest(pageRequest.getPageNumber()-1, pageRequest.getPageSize());
+            //paymentsLogs = paymentsLogRepository.getList(pageRequest);
+        }
+        return paymentsLogs;
     }
 
     public List<PaymentsLogResponse> getFilteredList(){
         int page = 0;
         int limit = 10;
-        Page<PaymentsLog> paymentsLogList = this.getList(page, limit);
+        return getFilteredList(page, limit);
+    }
+
+    public List<PaymentsLogResponse> getFilteredList(int page) {
+        int limit = 10;
+        return getFilteredList(page, limit);
+    }
+
+    public List<PaymentsLogResponse> getFilteredList(int page, int limit){
+        Pageable pageRequest = new PageRequest(page, limit);
+        Page<PaymentsLog> paymentsLogList = this.getList(pageRequest);
         List<PaymentsLogResponse> paymentsLogResponseList = new ArrayList<>();
         for(PaymentsLog paymentsLog : paymentsLogList){
             PaymentsLogResponse tmp = new PaymentsLogResponse(paymentsLog, paymentWarningThreshold);

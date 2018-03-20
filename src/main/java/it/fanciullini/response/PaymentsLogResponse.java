@@ -6,12 +6,13 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
 @Data
 @PropertySource("classpath: application.properties")
-public class PaymentsLogResponse extends PaymentsLog {
+public class PaymentsLogResponse extends PaymentsLog implements Serializable {
 
     private String pagante;
 

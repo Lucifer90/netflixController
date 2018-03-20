@@ -15,6 +15,8 @@ public interface PaymentsLogRepository extends PagingAndSortingRepository<Paymen
 
     public PaymentsLog save(PaymentsLog paymentsLog);
 
+    public PaymentsLog findById(Long id);
+
     @Query("SELECT SUM (paymentsLog.quantity) FROM PaymentsLog paymentsLog WHERE username = :username AND payed = :statusEnum")
     public Double importTotalByUser(@Param("username") String username, @Param("statusEnum") StatusEnum statusEnum);
 

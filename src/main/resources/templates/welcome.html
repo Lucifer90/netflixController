@@ -3,6 +3,7 @@
     <meta charset="UTF-8" />
     <link rel="stylesheet" type="text/css" th:href="@{../../css/styles.css}" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <title>Benvenuto!</title>
 </head>
 <body>
@@ -12,7 +13,7 @@
 <canvas id="myBarChart" width="600" height="200"></canvas>
 <script th:inline="javascript">
     // Definisco i dati da mostrare nel grafico
-
+    document.getElementsByClassName("toDevelope").disabled = true;
     /*<![CDATA[*/
     var users = /*[[${usersList}]]*/ 'User Name';
     var userLabels = [];
@@ -45,6 +46,49 @@
         }
     });
 
+    function sendMail_p(paymentsLog){
+        var myJSONObject = {"paymentsLog":paymentsLog.toString()};
+        var toServer = myJSONObject.toString();
+        var request=new XMLHttpRequest();
+        request.open("POST", "/home/sendwarning" , true);
+        request.setRequestHeader('content-type', 'application/json; charset=utf-8');
+        request.send(toServer);
+
+
+
+        //var form = document.createElement("form");
+        //form.setAttribute("method", "post");
+        //form.setAttribute("action", "sendwarning");
+        //form.setAttribute("email", paymentsLog);
+        //document.body.appendChild(form);
+        //form.submit();
+    }
+
+    function sendMail(paymentsLog) {
+        var xhttp = new XMLHttpRequest();
+
+        var ItemJSON;
+        ItemJSON = '[{ "paymentsLogResponse": paymentsLog }]';
+        xhttp.open("POST", "/sendEmail", true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send(ItemJSON);
+        var response = JSON.parse(xhttp.responseText);
+    }
+
+    $(function () {
+        $('input').on('click', function () {
+            var Status = $(this).val();
+            $.ajax({
+                url: '/sendwarning',
+                data: {
+                    text: $("textarea[name=Status]").val(),
+                    Status: Status
+                },
+                dataType : 'json'
+            });
+        });
+    });
+
 </script>
 </div>
 
@@ -61,7 +105,11 @@
         <tr>
             <td th:text="${user.name}"></td>
             <td th:text="${user.surname}"></td>
-            <td th:text="${user.mail}"></td>
+            <!--td th:text="${user.mail}"></td-->
+            <td>
+                <input type="hidden" name="email" th:value="${user.mail}" />
+                <button class="toDevelope" style="height: 100%; width: 100%; background-color: green;'"><b>Invia Messaggio</b></button>
+            </td>
             <td th:text="${#dates.format(user.getRegisterDate(), 'dd MMM yyyy HH:mm')}"></td>
             <td th:text="${user.importTotal}"></td>
         </tr>
@@ -78,18 +126,53 @@
         <th>Stato Pagamento</th>
     </tr>
     <th:block th:each="paymentsLog : ${paymentsLogList}">
-        <tr>
-            <td th:text="${paymentsLog.getPagante()}"></td>
-            <td th:text="${paymentsLog.getQuantity()}"></td>
-            <td th:text="${#dates.format(paymentsLog.getPaymentDate(), 'dd MMM yyyy HH:mm')}"></td>
-            <td th:text="${#dates.format(paymentsLog.getStartServicePeriod(), 'dd MMM yyyy HH:mm')}"></td>
-            <td th:text="${#dates.format(paymentsLog.getEndServicePeriod(), 'dd MMM yyyy HH:mm')}"></td>
-            <td th:style="${paymentsLog.getPayed().getDbValue() == 0 } ? 'background-color: green;' : (${paymentsLog.getPayed().getDbValue() == 1 } ? 'background-color: white;' : 'background-color: orange;')" ></td>
-        </tr>
+        <form action="/home/sendwarning" method="post">
+            <tr>
+                <td th:text="${paymentsLog.getPagante()}"></td>
+                <td th:text="${paymentsLog.getQuantity()}"></td>
+                <td th:text="${#dates.format(paymentsLog.getPaymentDate(), 'dd MMM yyyy HH:mm')}"></td>
+                <td th:text="${#dates.format(paymentsLog.getStartServicePeriod(), 'dd MMM yyyy HH:mm')}"></td>
+                <td th:text="${#dates.format(paymentsLog.getEndServicePeriod(), 'dd MMM yyyy HH:mm')}"></td>
+                <!--td th:style="${paymentsLog.getPayed().getDbValue() == 0 } ? 'background-color: green;' : (${paymentsLog.getPayed().getDbValue() == 1 } ? 'background-color: white;' : 'background-color: orange;')" ></td-->
+                <td th:switch="${paymentsLog.getPayed().getDbValue()}" th:style="${paymentsLog.getPayed().getDbValue() == 0 } ? 'background-color: green;' : (${paymentsLog.getPayed().getDbValue() == 1 } ? 'background-color: white;' : 'background-color: orange;')" >
+                    <!--label th:case="0" th:style="'background-color: green; height: 100%; width: 100%;'"></label>
+                    <label th:case="1" th:style="'background-color: white; height: 100%; width: 100%;'"></label-->
+                    <label th:case="2" th:style="'background-color: orange; height: 100%; width: 100%;'">
+                        <input type="hidden" name="paymentId" th:value="${paymentsLog.getId()}" />
+                        <button style="height: 100%; width: 100%; background-color: red;'"><b>Invia Notifica di Pagamento</b></button>
+                        <!--input type="button" value="Invia Notifica di Pagamento" style="height: 100%; width: 100%; background-color: red;'" /><Invia Notifica di Pagamento</input>
+                        <button style="height: 100%; width: 100%; background-color: red;'" th:onclick="'sendMail_p(\'' + ${paymentsLogList} + '\');'">Invia Notifica di Pagamento</button-->
+                    </label>
+                </td>
+            </tr>
+        </form>
     </th:block>
 </table>
+
+    <div id="frm" style="display:inline;">
+        <div style="display:inline; float: left;">
+            <form action="/home/changepage" method="post">
+                <input type="hidden" name="pagenumber" th:value="${pageNumber - 1}" />
+                <input type="submit" value="Indietro" />
+            </form>
+        </div>
+        <div style="display:inline; float: left; padding-left:5em; padding-right:5em">
+            <label th:text="${pageNumber + 1}" th:value="${pageNumber + 1}"></label>
+        </div>
+        <div style="display:inline;">
+            <form action="/home/changepage" method="post">
+                <input type="hidden" name="pagenumber" th:value="${pageNumber + 1}" />
+                <input type="submit" value="Avanti" />
+            </form>
+        </div>
+    </div>
 </body>
 </html>
+
+
+
+
+
 
 
 
