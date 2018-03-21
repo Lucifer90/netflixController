@@ -31,8 +31,11 @@ public class TelegramBot extends TelegramLongPollingBot
             chatId = update.getMessage().getChatId();
             switch(request){
                 case "/start":
-                    response = apiAddAtStart(update);
-                    return;
+                    response = apiAddAtStart();
+                    break;
+                case "/help":
+                    response = apiHelp();
+                    break;
                 case "/setbyanag":
                     if (requestFull.length < 3) {
                         response = "Errato numero di parametri, la sintassi è: /setByAnag nome cognome";
@@ -48,7 +51,7 @@ public class TelegramBot extends TelegramLongPollingBot
                     }
                     break;
                 default:
-                    response = apiDefaultResponse(update);
+                    response = apiDefaultResponse();
                     break;
             }
         }
@@ -63,8 +66,8 @@ public class TelegramBot extends TelegramLongPollingBot
         }
     }
 
-    private String apiAddAtStart(Update update){
-        return checkChatId(update.getMessage());
+    private String apiAddAtStart(){
+        return apiHelp();
     }
 
     private String apiAddByAnag(Update update, String name, String surname){
@@ -75,8 +78,15 @@ public class TelegramBot extends TelegramLongPollingBot
         return connectByUsername(username, update.getMessage().getChatId());
     }
 
-    private String apiDefaultResponse(Update update){
+    private String apiDefaultResponse(){
         return warningMessage;
+    }
+
+    private String apiHelp(){
+        return "Ciao! Questo bot serve solo ed unicamente come dispatcher delle notifiche dell'applicazione\n" +
+                "Netflix Controller! Per adesso supporta solamente i seguenti comandi:\n" +
+                "1- /setByAnag nome cognome: Collega il tuo account NetflixController al tuo account telegram attravero nome e cognome\n" +
+                "2- /setByUsername username: Collega il tuo account NetflixController al tuo account telegram attraverso la tua login al servizio\n";
     }
 
     public void sendNotification(Long chatId, String text){
