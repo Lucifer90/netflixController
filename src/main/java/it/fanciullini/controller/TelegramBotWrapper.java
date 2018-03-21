@@ -38,7 +38,9 @@ public class TelegramBotWrapper
     }
 
     public void sendBotMessage(Long chatId, String message){
-        telegramBot.sendNotification(chatId, message);
+        if (chatId != null) {
+            telegramBot.sendNotification(chatId, message);
+        }
     }
 
 }
