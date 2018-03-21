@@ -16,9 +16,14 @@ public interface UserRepository extends PagingAndSortingRepository<User, Long>
 
     User findById(Long id);
 
+    User findByTelegramId(Long telegramId);
+
     List<User> findByUsername(String username);
 
     List<User> findByUsernameAndPassword(String userName, String password);
+
+    User findByNameAndSurname(String name, String surname);
+
 
     @Query("SELECT user FROM User user")
     List<User> getList();

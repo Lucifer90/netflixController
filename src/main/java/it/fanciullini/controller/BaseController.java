@@ -2,8 +2,10 @@ package it.fanciullini.controller;
 
 import it.fanciullini.data.entity.PaymentsLog;
 import it.fanciullini.data.entity.User;
+import it.fanciullini.data.service.CommunicationLogService;
 import it.fanciullini.data.service.PaymentsLogService;
 import it.fanciullini.data.service.UserService;
+import it.fanciullini.module.TelegramBot;
 import it.fanciullini.response.PaymentsLogResponse;
 import it.fanciullini.utility.MailService;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.thymeleaf.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +30,16 @@ public class BaseController {
 	private MailService mailService;
 
 	@Autowired
+	private TelegramBotWrapper telegramBotWrapper;
+
+	@Autowired
 	private UserService userService;
 
 	@Autowired
 	private PaymentsLogService paymentsLogService;
+
+	@Autowired
+	private CommunicationLogService communicationLogService;
 
 	private static int counter = 0;
 	private static final String VIEW_INDEX = "index";
@@ -104,9 +113,15 @@ public class BaseController {
 
 	@RequestMapping(value = "/sendwarning", method = RequestMethod.POST)
 	public String sendWarning(@RequestParam Long paymentId, ModelMap model){
+		User senderUser = userService.findByUserName(session);
 		PaymentsLog paymentsLog = paymentsLogService.findById(paymentId);
 		User poorBoy = paymentsLog.getUser();
-		mailService.sendWarning(poorBoy.getMail(), poorBoy.getName()+" "+poorBoy.getSurname(), paymentsLog.getPaymentDate());
+		String alreadyWarned = communicationLogService.haveAlreadyBeenWarned(poorBoy);
+		if (StringUtils.isEmpty(alreadyWarned)){
+			String message = mailService.sendWarning(poorBoy, senderUser, paymentsLog);
+			telegramBotWrapper.sendBotMessage(poorBoy.getTelegramId(),
+					message.replaceAll("(?s)<[^>]*>(\\s*<[^>]*>)*", " "));
+		}
 		return "redirect:/home/"+VIEW_WELCOME_PAGE;
 	}
 

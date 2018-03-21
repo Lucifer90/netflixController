@@ -69,6 +69,13 @@ public class UserService
         return usersToReturn;
     }
 
+    public User findByTelegramId(Long telegramId){
+        return usersRepository.findByTelegramId(telegramId);
+    }
+
+    public User findByNameAndSurname(String name, String surname){
+        return usersRepository.findByNameAndSurname(name, surname);
+    }
     public User save(User user){
         return usersRepository.save(user);
     }

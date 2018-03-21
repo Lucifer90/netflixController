@@ -1,0 +1,9 @@
+-Tasto invia mail solo per admin, limite a una mail ogni 12 ore.
+
+-Messaggio privato (clicco, si apre piccola finestra digito, invia/annulla) - Log su db
+-Tasti più carini
+
+-Parser Netflix Page
+-Popolazione tabella automatica
+
+-Bot telegram

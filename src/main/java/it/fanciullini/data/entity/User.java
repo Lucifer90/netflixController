@@ -20,6 +20,7 @@ public class User implements Serializable
     public User (User user){
         this.id = user.getId();
         this.username = user.getUsername();
+        this.telegramId = user.getTelegramId();
         this.mail = user.getMail();
         this.name = user.getName();
         this.surname = user.getSurname();
@@ -37,6 +38,9 @@ public class User implements Serializable
 
     @Column(name = "username")
     private String username;
+
+    @Column(name = "telegram_id")
+    private Long telegramId;
 
     @Column(name = "mail")
     private String mail;

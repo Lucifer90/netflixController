@@ -1,5 +1,9 @@
 package it.fanciullini.utility;
+import it.fanciullini.data.entity.PaymentsLog;
+import it.fanciullini.data.entity.User;
+import it.fanciullini.data.service.CommunicationLogService;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -45,7 +49,8 @@ public class MailService {
             "<h1>Netflix sta per scadere, tocca a te pagliaccio!</h1>"
     );
 
-
+    @Autowired
+    private CommunicationLogService communicationLogService;
 
     @PostConstruct
     public void init(){
@@ -88,7 +93,10 @@ public class MailService {
                 "L'abbonamento scadrà il "+expiringDate+" e secondo i nostri complessi dati tocca a te pagare!";
     }
 
-    public void sendWarning(String receiver, String payer, Date expiringDate){
+    public String sendWarning(User poorBoy, User senderUser, PaymentsLog paymentsLog){
+        String receiver = poorBoy.getMail();
+        String payer = poorBoy.getName()+" "+poorBoy.getSurname();
+        Date expiringDate = paymentsLog.getPaymentDate();
         String mgs = setMessageNested(payer, expiringDate);
         MimeMessage mimeMessage = setMessage(receiver, mgs);
         Transport transport = null;
@@ -98,17 +106,13 @@ public class MailService {
             e.printStackTrace();
         }
 
-        // Send the message.
         try
         {
             System.out.println("Sending...");
-
-            // Connect to Amazon SES using the SMTP username and password you specified above.
             transport.connect(smtpHost, sender, password);
-
-            // Send the email.
             if (!dryRun) {
                 transport.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
+                communicationLogService.insertCommunicationTrace(poorBoy, senderUser, SUBJECT, mgs);
             }
             System.out.println("Email sent!");
         }
@@ -118,13 +122,13 @@ public class MailService {
         }
         finally
         {
-            // Close and terminate the connection.
             try {
                 transport.close();
             } catch (MessagingException | NullPointerException e) {
                 e.printStackTrace();
             }
         }
+        return mgs;
     }
 
 
