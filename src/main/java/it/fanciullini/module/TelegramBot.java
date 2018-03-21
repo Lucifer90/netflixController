@@ -23,42 +23,60 @@ public class TelegramBot extends TelegramLongPollingBot
     public void onUpdateReceived(Update update) {
         // We check if the update has a message and the message has text
         SendMessage message = new SendMessage();
+        String response = "";
+        Long chatId = -1L;
         if (update.hasMessage() && update.getMessage().hasText()) {
-            String request = update.getMessage().getText().toLowerCase();
-            SendMessage sendMessage = new SendMessage();
+            String[] requestFull = update.getMessage().getText().toLowerCase().split(" ");
+            String request = requestFull[0];
+            chatId = update.getMessage().getChatId();
             switch(request){
                 case "/start":
-                    api_start(update);
+                    response = apiAddAtStart(update);
+                    return;
+                case "/setbyanag":
+                    if (requestFull.length < 3) {
+                        response = "Errato numero di parametri, la sintassi è: /setByAnag nome cognome";
+                    } else {
+                        response = apiAddByAnag(update, requestFull[1], requestFull[2]);
+                    }
                     break;
-                case "/setUserByNameAndSurname":
-                    api_profile(update);
+                case "/setbyusername":
+                    if (requestFull.length < 2) {
+                        response = "Errato numero di parametri, la sintassi è: /setByAnag username";
+                    } else {
+                        response = apiAddByUsername(update, requestFull[1]);
+                    }
                     break;
                 default:
-                    api_default(update);
+                    response = apiDefaultResponse(update);
                     break;
             }
         }
         try {
-            execute(message); // Call method to send the message
+            if (chatId != -1 && !response.isEmpty()) {
+                message.setChatId(chatId);
+                message.setText(response);
+                execute(message); // Call method to send the message
+            }
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
     }
 
-    private SendMessage api_start(Update update){
-        checkChatId(update.getMessage());
-        return new SendMessage();
+    private String apiAddAtStart(Update update){
+        return checkChatId(update.getMessage());
     }
 
-    private SendMessage api_profile(Update update){
-        checkChatId(update.getMessage());
-        return new SendMessage();
+    private String apiAddByAnag(Update update, String name, String surname){
+        return connectByAnag(name, surname, update.getMessage().getChatId());
     }
 
-    private SendMessage api_default(Update update){
-        return new SendMessage() // Create a SendMessage object with mandatory fields
-                .setChatId(update.getMessage().getChatId())
-                .setText(warningMessage);
+    private String apiAddByUsername(Update update, String username){
+        return connectByUsername(username, update.getMessage().getChatId());
+    }
+
+    private String apiDefaultResponse(Update update){
+        return warningMessage;
     }
 
     public void sendNotification(Long chatId, String text){
@@ -80,11 +98,28 @@ public class TelegramBot extends TelegramLongPollingBot
         return token;
     }
 
-    private void checkChatId(Message message){
+    private String checkChatId(Message message){
         User user = userService.findByTelegramId(message.getChatId());
         if (user == null){
             user = selectOrCreate(message.getFrom().getFirstName(), message.getFrom().getLastName(), message.getChatId());
+            return "OK - Utente associato";
+        } else {
+            return "OK - Utente precedentemente associato";
         }
+    }
+
+    private String connectByAnag(String name, String surname, Long chatId){
+        User user = userService.findByNameAndSurname(name, surname);
+        user.setTelegramId(chatId);
+        userService.save(user);
+        return "OK - Utente associato";
+    }
+
+    private String connectByUsername(String  username, Long chatId){
+        User user = userService.findByUserName(username);
+        user.setTelegramId(chatId);
+        userService.save(user);
+        return "OK - Utente associato";
     }
 
     private User selectOrCreate(String name, String surname, Long chatId){
