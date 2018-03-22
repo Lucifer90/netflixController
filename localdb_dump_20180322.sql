@@ -27,9 +27,9 @@ CREATE TABLE `communication_log` (
   `type_communication` tinyint(4) DEFAULT NULL,
   `sender` varchar(45) NOT NULL,
   `receiver` varchar(45) NOT NULL,
-  `submission_date` varchar(45) NOT NULL,
-  `subject` varchar(45) NOT NULL,
-  `content` varchar(45) NOT NULL,
+  `submission_date` datetime NOT NULL,
+  `subject` varchar(255) NOT NULL,
+  `content` varchar(2048) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -115,4 +115,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-03-22  0:30:43
+-- Dump completed on 2018-03-22  0:43:20
