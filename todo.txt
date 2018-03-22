@@ -6,3 +6,4 @@
 
 -Parser Netflix Page
 -Popolazione tabella automatica
+-Encoding mail UTF-8
