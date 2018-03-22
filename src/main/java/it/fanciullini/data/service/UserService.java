@@ -58,7 +58,7 @@ public class UserService
         List<User> tmp = usersRepository.getList();
         List<UsersResponse> usersToReturn = new ArrayList<>();
         for(User usr : tmp){
-            if(role.hasPermission(usr.getRole())) {
+            if(role.hasPermission(usr.getRole()) && !usr.getHidden()) {
                 UsersResponse user = new UsersResponse(usr);
                 user.setImportTotal(paymentsLogService.importTotalByUser(usr));
                 user.setPassword("");

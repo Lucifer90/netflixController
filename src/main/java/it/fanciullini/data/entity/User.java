@@ -29,6 +29,7 @@ public class User implements Serializable
         this.deleteDate = user.getDeleteDate();
         this.phone = user.getPhone();
         this.role = user.getRole();
+        this.hidden = hidden;
     }
 
     @Id
@@ -65,5 +66,8 @@ public class User implements Serializable
 
     @Column(name="role")
     private Roles role;
+
+    @Column(name="hidden")
+    private Boolean hidden;
 
 }

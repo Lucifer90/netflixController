@@ -2,8 +2,8 @@ package it.fanciullini.utility;
 
 public enum StatusEnum implements EnumConverter<Integer>
 {
-    PAYED(0, "Pagato"),
-    TOBEPAYED(1, "Da Pagare"),
+    TOBEPAYED(0, "Da Pagare"),
+    PAYED(1, "Pagato"),
     INPAYMENT(2, "In scadenza"),
     EXPIRED(3, "Scaduto");
 

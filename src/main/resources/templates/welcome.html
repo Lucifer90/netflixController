@@ -133,15 +133,10 @@
                 <td th:text="${#dates.format(paymentsLog.getPaymentDate(), 'dd MMM yyyy HH:mm')}"></td>
                 <td th:text="${#dates.format(paymentsLog.getStartServicePeriod(), 'dd MMM yyyy HH:mm')}"></td>
                 <td th:text="${#dates.format(paymentsLog.getEndServicePeriod(), 'dd MMM yyyy HH:mm')}"></td>
-                <!--td th:style="${paymentsLog.getPayed().getDbValue() == 0 } ? 'background-color: green;' : (${paymentsLog.getPayed().getDbValue() == 1 } ? 'background-color: white;' : 'background-color: orange;')" ></td-->
-                <td th:switch="${paymentsLog.getPayed().getDbValue()}" th:style="${paymentsLog.getPayed().getDbValue() == 0 } ? 'background-color: green;' : (${paymentsLog.getPayed().getDbValue() == 1 } ? 'background-color: white;' : 'background-color: orange;')" >
-                    <!--label th:case="0" th:style="'background-color: green; height: 100%; width: 100%;'"></label>
-                    <label th:case="1" th:style="'background-color: white; height: 100%; width: 100%;'"></label-->
+                <td th:switch="${paymentsLog.getPayed().getDbValue()}" th:style="${paymentsLog.getPayed().getDbValue() == 1 } ? 'background-color: green;' : (${paymentsLog.getPayed().getDbValue() == 0 } ? 'background-color: white;' : 'background-color: orange;')" >
                     <label th:case="2" th:style="'background-color: orange; height: 100%; width: 100%;'">
                         <input type="hidden" name="paymentId" th:value="${paymentsLog.getId()}" />
                         <button style="height: 100%; width: 100%; background-color: red;'"><b>Invia Notifica di Pagamento</b></button>
-                        <!--input type="button" value="Invia Notifica di Pagamento" style="height: 100%; width: 100%; background-color: red;'" /><Invia Notifica di Pagamento</input>
-                        <button style="height: 100%; width: 100%; background-color: red;'" th:onclick="'sendMail_p(\'' + ${paymentsLogList} + '\');'">Invia Notifica di Pagamento</button-->
                     </label>
                 </td>
             </tr>
