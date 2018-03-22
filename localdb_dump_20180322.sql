@@ -68,7 +68,7 @@ CREATE TABLE `payments_log` (
 
 LOCK TABLES `payments_log` WRITE;
 /*!40000 ALTER TABLE `payments_log` DISABLE KEYS */;
-INSERT INTO `payments_log` VALUES (1,'rmazzi',11.99,'2017-06-30 00:00:00','2017-06-30 00:00:00','2017-07-30 00:00:00',1),(2,'rmazzi',11.99,'2017-07-30 00:00:00','2017-07-30 00:00:00','2017-08-30 00:00:00',1),(3,'rmazzi',11.99,'2017-08-30 00:00:00','2017-08-30 00:00:00','2017-09-30 00:00:00',1),(4,'lfanciullini',11.99,'2017-09-30 00:00:00','2017-09-30 00:00:00','2017-10-30 00:00:00',1),(5,'lfanciullini',13.99,'2017-10-30 00:00:00','2017-10-30 00:00:00','2017-11-30 00:00:00',1),(6,'lfanciullini',13.99,'2017-11-30 00:00:00','2017-11-30 00:00:00','2017-12-30 00:00:00',1),(7,'rluzzi',13.99,'2017-12-30 00:00:00','2017-12-30 00:00:00','2018-01-30 00:00:00',1),(8,'rluzzi',13.99,'2018-01-30 00:00:00','2018-01-30 00:00:00','2018-03-02 00:00:00',1),(9,'rluzzi',13.99,'2018-03-02 00:00:00','2018-03-02 00:00:00','2018-04-02 00:00:00',1),(10,'msemoli',13.99,'2018-04-02 00:00:00','2018-04-02 00:00:00','2018-05-02 00:00:00',0),(11,'msemoli',13.99,'2018-05-02 00:00:00','2018-05-02 00:00:00','2018-06-02 00:00:00',0),(12,'msemoli',13.99,'2018-06-02 00:00:00','2018-06-02 00:00:00','2018-07-02 00:00:00',0);
+INSERT INTO `payments_log` VALUES (1,'rmazzi',11.99,'2017-06-30 00:00:00','2017-06-30 00:00:00','2017-07-30 00:00:00',1),(2,'rmazzi',11.99,'2017-07-30 00:00:00','2017-07-30 00:00:00','2017-08-30 00:00:00',1),(3,'rmazzi',11.99,'2017-08-30 00:00:00','2017-08-30 00:00:00','2017-09-30 00:00:00',1),(4,'lfanciullini',11.99,'2017-09-30 00:00:00','2017-09-30 00:00:00','2017-10-30 00:00:00',1),(5,'lfanciullini',13.99,'2017-10-30 00:00:00','2017-10-30 00:00:00','2017-11-30 00:00:00',1),(6,'lfanciullini',13.99,'2017-11-30 00:00:00','2017-11-30 00:00:00','2017-12-30 00:00:00',1),(7,'rluzzi',13.99,'2017-12-30 00:00:00','2017-12-30 00:00:00','2018-01-30 00:00:00',1),(8,'rluzzi',13.99,'2018-01-30 00:00:00','2018-01-30 00:00:00','2018-03-02 00:00:00',1),(9,'rluzzi',13.99,'2018-03-02 00:00:00','2018-03-02 00:00:00','2018-04-02 00:00:00',1),(10,'lfanciullini',13.99,'2018-04-02 00:00:00','2018-04-02 00:00:00','2018-05-02 00:00:00',0),(11,'msemoli',13.99,'2018-05-02 00:00:00','2018-05-02 00:00:00','2018-06-02 00:00:00',0),(12,'msemoli',13.99,'2018-06-02 00:00:00','2018-06-02 00:00:00','2018-07-02 00:00:00',0);
 /*!40000 ALTER TABLE `payments_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -102,7 +102,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (0,'Luca','Fanciullini','2017-01-01 00:00:00',NULL,'Luciferino','luca.fanciullini@gmail.com','3331330130','Passw0rd!',0,NULL,0),(1,'Luca','Fanciullini','2017-01-01 00:00:00',NULL,'lfanciullini',NULL,NULL,'Passw0rd!',1,303341,0),(2,'Riccardo','Luzzi','2017-01-01 00:00:00',NULL,'rluzzi',NULL,NULL,'passwxord',1,NULL,0),(3,'Matteo','Semoli','2017-01-01 00:00:00',NULL,'msemoli',NULL,NULL,'passwxord',1,NULL,0),(4,'Ruben','Mazzi','2017-01-01 00:00:00',NULL,'rmazzi',NULL,NULL,'passwxord',1,NULL,0),(5,'visitatore','visitatore','2017-01-01 00:00:00',NULL,'visitor',NULL,NULL,'password',1,NULL,1);
+INSERT INTO `users` VALUES (0,'Luca','Fanciullini','2017-01-01 00:00:00',NULL,'Luciferino','luca.fanciullini@gmail.com',NULL,'Passw0rd!',0,NULL,0),(1,'Luca','Fanciullini','2017-01-01 00:00:00',NULL,'lfanciullini','luca.fanciullini@gmail.com',NULL,'Passw0rd!',1,303341,0),(2,'Riccardo','Luzzi','2017-01-01 00:00:00',NULL,'rluzzi','Luzziriccardo@gmail.com',NULL,'passwxord',1,NULL,0),(3,'Matteo','Semoli','2017-01-01 00:00:00',NULL,'msemoli','agigibugi@hotmail.it',NULL,'passwxord',1,NULL,0),(4,'Ruben','Mazzi','2017-01-01 00:00:00',NULL,'rmazzi','koyo@hotmail.it',NULL,'passwxord',1,NULL,0),(5,'visitatore','visitatore','2017-01-01 00:00:00',NULL,'visitor','muggi23@hotmail.it',NULL,'password',1,NULL,1);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -115,4 +115,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-03-22  0:26:20
+-- Dump completed on 2018-03-22  0:30:43
