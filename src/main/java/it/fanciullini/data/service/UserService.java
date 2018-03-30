@@ -1,12 +1,15 @@
 package it.fanciullini.data.service;
 
+import it.fanciullini.data.entity.PaymentsLog;
 import it.fanciullini.data.entity.User;
 import it.fanciullini.data.repo.UserRepository;
 import it.fanciullini.response.UsersResponse;
 import it.fanciullini.utility.Roles;
 import org.hibernate.exception.DataException;
 import org.hibernate.service.spi.ServiceException;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,9 +17,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static it.fanciullini.utility.Utils.calculateDifference;
+
 @Service
 public class UserService
 {
+
+
+    @Value("${notification.warning.threshold}")
+    private Integer notificationWarningThreshold;
+
     @Autowired
     UserRepository usersRepository;
 
@@ -67,6 +77,15 @@ public class UserService
             }
         }
         return usersToReturn;
+    }
+
+    public User getPayer(PaymentsLog paymentsLog){
+        DateTime lastWarning = new DateTime(paymentsLog.getPaymentDate());
+        Long timeDiff = calculateDifference(lastWarning);
+        if (timeDiff <= notificationWarningThreshold * 60 * 60 * 1000 ){
+            return paymentsLog.getUser();
+        }
+        return null;
     }
 
     public User findByTelegramId(Long telegramId){

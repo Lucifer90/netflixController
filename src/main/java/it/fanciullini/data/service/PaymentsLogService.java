@@ -50,7 +50,7 @@ public class PaymentsLogService
         return getFilteredList(page, limit);
     }
 
-    public List<PaymentsLogResponse> getFilteredList(int page, int limit){
+    private List<PaymentsLogResponse> getFilteredList(int page, int limit){
         Pageable pageRequest = new PageRequest(page, limit);
         Page<PaymentsLog> paymentsLogList = this.getList(pageRequest);
         List<PaymentsLogResponse> paymentsLogResponseList = new ArrayList<>();
@@ -64,6 +64,14 @@ public class PaymentsLogService
     public Double importTotalByUser(User user) {
         Double total = paymentsLogRepository.importTotalByUser(user.getUsername(), StatusEnum.PAYED);
         return total != null ? total : new Double(0);
+    }
+
+    public PaymentsLog getFirstFuturePayment(){
+        Page<PaymentsLog> paymentsLogPage = paymentsLogRepository.getByPayedOrderByPaymentDateAsc(StatusEnum.TOBEPAYED);
+        for (PaymentsLog paymentsLog : paymentsLogPage){
+            return paymentsLog;
+        }
+        return null;
     }
 
     public PaymentsLog save(PaymentsLog paymentsLog){

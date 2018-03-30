@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static it.fanciullini.utility.Utils.calculateDifference;
+
 @Service
 public class CommunicationLogService {
 
@@ -52,11 +54,6 @@ public class CommunicationLogService {
             }
         }
         return "";
-    }
-
-    private Long calculateDifference(DateTime lastSubmissionDate){
-        DateTime now = new DateTime();
-        return now.getMillis() - lastSubmissionDate.getMillis();
     }
 
     private void save(CommunicationLog communicationLog){
