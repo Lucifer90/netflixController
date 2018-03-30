@@ -6,6 +6,7 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.thymeleaf.util.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
@@ -94,6 +95,10 @@ public class MailService {
     }
 
     public String sendWarning(User poorBoy, User senderUser, PaymentsLog paymentsLog){
+        String alreadyWarned = communicationLogService.haveAlreadyBeenWarned(poorBoy);
+        if (StringUtils.isEmpty(alreadyWarned)){
+            return null;
+        }
         String receiver = poorBoy.getMail();
         String payer = poorBoy.getName()+" "+poorBoy.getSurname();
         Date expiringDate = paymentsLog.getPaymentDate();
@@ -130,6 +135,7 @@ public class MailService {
         }
         return mgs;
     }
+
 
 
 

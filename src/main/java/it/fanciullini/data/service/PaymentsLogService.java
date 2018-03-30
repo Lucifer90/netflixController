@@ -67,9 +67,9 @@ public class PaymentsLogService
     }
 
     public PaymentsLog getFirstFuturePayment(){
-        Page<PaymentsLog> paymentsLogPage = paymentsLogRepository.getByPayedOrderByPaymentDateAsc(StatusEnum.TOBEPAYED);
-        for (PaymentsLog paymentsLog : paymentsLogPage){
-            return paymentsLog;
+        List<PaymentsLog> paymentsLogList = paymentsLogRepository.getByPayedOrderByPaymentDateAsc(StatusEnum.TOBEPAYED);
+        if (paymentsLogList.size()>0){
+            return paymentsLogList.get(0);
         }
         return null;
     }

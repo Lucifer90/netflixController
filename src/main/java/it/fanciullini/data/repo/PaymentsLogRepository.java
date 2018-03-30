@@ -23,6 +23,6 @@ public interface PaymentsLogRepository extends PagingAndSortingRepository<Paymen
     @Query("SELECT paymentsLog FROM PaymentsLog paymentsLog ORDER BY paymentDate DESC")
     public Page<PaymentsLog> getList(Pageable pageRequest);
 
-    public Page<PaymentsLog> getByPayedOrderByPaymentDateAsc(StatusEnum statusEnum);
+    public List<PaymentsLog> getByPayedOrderByPaymentDateAsc(StatusEnum statusEnum);
 
 }

@@ -116,9 +116,8 @@ public class BaseController {
 		User senderUser = userService.findByUserName(session);
 		PaymentsLog paymentsLog = paymentsLogService.findById(paymentId);
 		User poorBoy = paymentsLog.getUser();
-		String alreadyWarned = communicationLogService.haveAlreadyBeenWarned(poorBoy);
-		if (StringUtils.isEmpty(alreadyWarned)){
-			String message = mailService.sendWarning(poorBoy, senderUser, paymentsLog);
+		String message = mailService.sendWarning(poorBoy, senderUser, paymentsLog);
+		if (!StringUtils.isEmpty(message)) {
 			telegramBotWrapper.sendBotMessage(poorBoy.getTelegramId(),
 					message.replaceAll("(?s)<[^>]*>(\\s*<[^>]*>)*", " "));
 		}
