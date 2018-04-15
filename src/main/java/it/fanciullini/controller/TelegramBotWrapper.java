@@ -2,6 +2,8 @@ package it.fanciullini.controller;
 
 import it.fanciullini.data.service.UserService;
 import it.fanciullini.module.TelegramBot;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -23,6 +25,8 @@ public class TelegramBotWrapper
 
     private TelegramBot telegramBot;
 
+    private static Logger logger = LogManager.getLogger();
+
     @PostConstruct
     public void init(){
         ApiContextInitializer.init();
@@ -33,7 +37,7 @@ public class TelegramBotWrapper
             telegramBot = new TelegramBot(token, userService);
             botsApi.registerBot(telegramBot);
         } catch (TelegramApiException e) {
-            e.printStackTrace();
+            logger.error("Ther is already one telegram bot server on!");
         }
     }
 

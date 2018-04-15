@@ -5,8 +5,8 @@ import it.fanciullini.data.entity.User;
 import it.fanciullini.data.service.PaymentsLogService;
 import it.fanciullini.data.service.UserService;
 import it.fanciullini.utility.MailService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -32,12 +32,21 @@ public class MailAlert {
     @Autowired
     private TelegramBotWrapper telegramBotWrapper;
 
-    private static final Logger logger = LoggerFactory.getLogger(MailAlert.class);
+    private static Logger logger = LogManager.getLogger();
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
-    public void scheduleTaskWithFixedRate() {}
 
-    public void scheduleTaskWithFixedDelay() {}
+
+
+    @Scheduled(fixedRate = 43200000, initialDelay = 5000) //ms
+    public void tryLog(){
+        logger.info("INFO");
+        logger.debug("DEBUG");
+        logger.warn("WARN");
+        logger.error("ERROR");
+        logger.fatal("FATAL");
+    }
+
 
     @Scheduled(fixedRate = 43200000, initialDelay = 5000) //ms
     public void scheduleTaskWithInitialDelay() {

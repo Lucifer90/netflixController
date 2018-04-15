@@ -5,10 +5,8 @@ import it.fanciullini.data.entity.User;
 import it.fanciullini.data.service.CommunicationLogService;
 import it.fanciullini.data.service.PaymentsLogService;
 import it.fanciullini.data.service.UserService;
-import it.fanciullini.module.TelegramBot;
 import it.fanciullini.response.PaymentsLogResponse;
 import it.fanciullini.utility.MailService;
-import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,9 +20,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 @RequestMapping(value = "/home")
 public class BaseController {
+
+
+	private static final Logger logger = LogManager.getLogger(BaseController.class);
 
 	@Autowired
 	private MailService mailService;

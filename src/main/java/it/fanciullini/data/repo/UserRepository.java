@@ -2,11 +2,11 @@ package it.fanciullini.data.repo;
 
 import it.fanciullini.data.entity.User;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserRepository extends PagingAndSortingRepository<User, Long>
@@ -14,7 +14,7 @@ public interface UserRepository extends PagingAndSortingRepository<User, Long>
 
     public User save(User user);
 
-    User findById(Long id);
+    Optional<User> findById(Long id);
 
     User findByTelegramId(Long telegramId);
 

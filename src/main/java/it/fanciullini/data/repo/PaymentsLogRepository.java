@@ -9,13 +9,14 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PaymentsLogRepository extends PagingAndSortingRepository<PaymentsLog, Long>
 {
 
     public PaymentsLog save(PaymentsLog paymentsLog);
 
-    public PaymentsLog findById(Long id);
+    public Optional<PaymentsLog> findById(Long id);
 
     @Query("SELECT SUM (paymentsLog.quantity) FROM PaymentsLog paymentsLog WHERE username = :username AND payed = :statusEnum")
     public Double importTotalByUser(@Param("username") String username, @Param("statusEnum") StatusEnum statusEnum);

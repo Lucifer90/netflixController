@@ -2,6 +2,8 @@ package it.fanciullini.module;
 
 import it.fanciullini.data.entity.User;
 import it.fanciullini.data.service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
@@ -13,6 +15,8 @@ public class TelegramBot extends TelegramLongPollingBot
     private String token;
     private UserService userService;
     private String warningMessage = "Questo boot non è ancora interattivo, per adesso funziona da dispatcher di notifiche.";
+
+    private static Logger logger = LogManager.getLogger();
 
     public TelegramBot(String token, UserService userService){
         this.token = token;

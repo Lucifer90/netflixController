@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PaymentsLogService
@@ -29,7 +30,8 @@ public class PaymentsLogService
     private PaymentsLogRepository paymentsLogRepository;
 
     public PaymentsLog findById(Long id) {
-        return paymentsLogRepository.findById(id);
+        Optional<PaymentsLog> optionalPL = paymentsLogRepository.findById(id);
+        return optionalPL.orElse(null);
     }
 
     private Page<PaymentsLog> getList(Pageable pageRequest){
