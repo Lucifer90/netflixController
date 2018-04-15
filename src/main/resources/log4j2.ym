@@ -23,7 +23,7 @@ Configutation:
     RollingFile:
       - name: RollingFile_Appender
         fileName: ${log-path}/NetflixControllerRolling.log
-        filePattern: "logs/archive/rollingfile.log.%d{yyyy-MM-dd-hh-mm}.gz"
+        filePattern: "/var/logs/archive/rollingfile.log.%d{yyyy-MM-dd-hh-mm}.gz"
         PatternLayout:
           pattern: "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n"
         Policies:
