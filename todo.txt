@@ -4,7 +4,7 @@ BUG FIXING
 -Encoding mail UTF-8
 
 EVOLUTION
--Private Message System, input text & send button. With checkbox for telegram and mail selector.
+-Private Message System, input text & send button. With checkbox for telegram and mail selector. Move data-content into another html file!
 -Use something nicer like bootstrap for fe
 -Move to SpringBoot 2
 -Check who is connected by crossing information from access page and history page for user
