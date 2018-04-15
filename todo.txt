@@ -1,9 +1,11 @@
--Tasto invia mail solo per admin, limite a una mail ogni 12 ore.
--Bot telegram
-
--Messaggio privato (clicco, si apre piccola finestra digito, invia/annulla) - Log su db
--Tasti più carini
-
--Parser Netflix Page
--Popolazione tabella automatica
+BUG FIXING
+-Add some funcking logs! Time has come.
+-Fix for umparsable date (es. 30 aprile 2018 -> dd MMMM yyyy - why not working?)
 -Encoding mail UTF-8
+
+EVOLUTION
+-Private Message System, input text & send button. With checkbox for telegram and mail selector.
+-Use something nicer like bootstrap for fe
+-Move to SpringBoot 2
+-Check who is connected by crossing information from access page and history page for user
+-Use some cool netflix api, like zuul hystrix etc..
