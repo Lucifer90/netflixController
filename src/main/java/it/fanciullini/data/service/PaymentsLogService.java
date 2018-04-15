@@ -10,9 +10,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -72,6 +75,19 @@ public class PaymentsLogService
             return paymentsLogList.get(0);
         }
         return null;
+    }
+
+    public PaymentsLog getLatestPaymentByPayementStatus(StatusEnum statusEnum){
+        return paymentsLogRepository.findFirstByPayedOrderByPaymentDateDesc(statusEnum);
+    }
+
+    public PaymentsLog getLatestPaymentByPayementStatusNot(StatusEnum statusEnum){
+        return paymentsLogRepository.findFirstByPayedNotOrderByPaymentDateAsc(statusEnum);
+    }
+
+    public User findPayer(){
+        PaymentsLog paymentsLog = paymentsLogRepository.custom();
+        return paymentsLog.getUser();
     }
 
     public PaymentsLog save(PaymentsLog paymentsLog){

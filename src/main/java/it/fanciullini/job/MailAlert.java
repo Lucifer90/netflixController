@@ -43,6 +43,9 @@ public class MailAlert {
     public void scheduleTaskWithInitialDelay() {
         logger.info("Fixed Rate Task with Initial Delay :: Execution Time - {}", dateTimeFormatter.format(LocalDateTime.now()));
         PaymentsLog paymentsLog = paymentsLogService.getFirstFuturePayment();
+        if (paymentsLog == null){
+            return;
+        }
         User poorBoy = userService.getPayer(paymentsLog);
         User senderUser = userService.findByUserName("Luciferino");
         String message = mailService.sendWarning(poorBoy, senderUser, paymentsLog);

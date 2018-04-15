@@ -25,4 +25,14 @@ public interface PaymentsLogRepository extends PagingAndSortingRepository<Paymen
 
     public List<PaymentsLog> getByPayedOrderByPaymentDateAsc(StatusEnum statusEnum);
 
+    public PaymentsLog findFirstByPayedOrderByPaymentDateDesc(StatusEnum statusEnum);
+
+    public PaymentsLog findFirstByPayedNotOrderByPaymentDateAsc(StatusEnum statusEnum);
+
+    @Query("SELECT new PaymentsLog(paymentslog.id, paymentslog.user, paymentslog.quantity, MAX(paymentslog.paymentDate)," +
+            "paymentslog.startServicePeriod, paymentslog.endServicePeriod, paymentslog.payed) " +
+            "FROM PaymentsLog  paymentslog")
+    public PaymentsLog custom();
+
 }
+

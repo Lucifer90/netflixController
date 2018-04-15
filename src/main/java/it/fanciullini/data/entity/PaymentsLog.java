@@ -25,6 +25,17 @@ public class PaymentsLog implements Serializable
         this.payed = paymentsLog.getPayed();
     }
 
+    public PaymentsLog(Long id, User user, Double quantity, Date paymentDate,
+                       Date startServicePeriod, Date endServicePeriod, StatusEnum payed){
+        this.id = id;
+        this.user = user;
+        this.quantity = quantity;
+        this.paymentDate = paymentDate;
+        this. startServicePeriod = startServicePeriod;
+        this.endServicePeriod = endServicePeriod;
+        this.payed = payed;
+    }
+
     @Id
     @GeneratedValue
     @Column(name = "id")

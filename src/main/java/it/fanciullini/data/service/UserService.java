@@ -95,8 +95,10 @@ public class UserService
     public User findByNameAndSurname(String name, String surname){
         return usersRepository.findByNameAndSurname(name, surname);
     }
+
     public User save(User user){
         return usersRepository.save(user);
     }
+
 
 }
