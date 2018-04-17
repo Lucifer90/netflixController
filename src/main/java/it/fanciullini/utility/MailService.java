@@ -94,6 +94,17 @@ public class MailService {
                 "L'abbonamento scadrà il "+expiringDate+" e secondo i nostri complessi dati tocca a te pagare!";
     }
 
+
+    private String setCustomMessage(String payer, String mittente, String messaggio){
+        String header = String.join(
+                System.getProperty("line.separator"),
+                "<h1>Ciao "+payer+"! Hai ricevuto un nuovo messaggio privato da "+mittente+":\n" +
+                        ""+messaggio
+        );
+
+        return header;
+    }
+
     public String sendWarning(User poorBoy, User senderUser, PaymentsLog paymentsLog){
         String alreadyWarned = communicationLogService.haveAlreadyBeenWarned(poorBoy);
         if (StringUtils.isEmpty(alreadyWarned)){
@@ -103,6 +114,44 @@ public class MailService {
         String payer = poorBoy.getName()+" "+poorBoy.getSurname();
         Date expiringDate = paymentsLog.getPaymentDate();
         String mgs = setMessageNested(payer, expiringDate);
+        MimeMessage mimeMessage = setMessage(receiver, mgs);
+        Transport transport = null;
+        try {
+            transport = session.getTransport();
+        } catch (NoSuchProviderException e) {
+            e.printStackTrace();
+        }
+
+        try
+        {
+            System.out.println("Sending...");
+            transport.connect(smtpHost, sender, password);
+            if (!dryRun) {
+                transport.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
+                communicationLogService.insertCommunicationTrace(poorBoy, senderUser, SUBJECT, mgs);
+            }
+            System.out.println("Email sent!");
+        }
+        catch (Exception ex) {
+            System.out.println("The email was not sent.");
+            System.out.println("Error message: " + ex.getMessage());
+        }
+        finally
+        {
+            try {
+                transport.close();
+            } catch (MessagingException | NullPointerException e) {
+                e.printStackTrace();
+            }
+        }
+        return mgs;
+    }
+
+    public String sendWarning(User poorBoy, User senderUser, String messaggio) {
+        String alreadyWarned = communicationLogService.haveAlreadyBeenWarned(poorBoy);
+        String receiver = poorBoy.getMail();
+        String payer = poorBoy.getName()+" "+poorBoy.getSurname();
+        String mgs = setCustomMessage(payer, sender, messaggio);
         MimeMessage mimeMessage = setMessage(receiver, mgs);
         Transport transport = null;
         try {

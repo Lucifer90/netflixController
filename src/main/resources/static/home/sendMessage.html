@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:th="http://www.springframework.org/schema/mvc">
+<head>
+    <meta charset="UTF-8">
+
+</head>
+<body>
+
+<form action="/api/send" method="post">
+    <input name="message" type="text"/>
+    <input name="private_msg" id="private_msg" class="private_msg" type="button" value="Invia" />
+</form>
+
+<!--
+<script>
+    $(document).ready(function() {
+        $("#private_msg").click(function () {
+            var username = "prova";
+            var messaggio = "prova";
+
+            $.post( "/api/sendmessage", { username: "luchino", message: "messaggio" } );
+
+        });
+    });
+
+    function sendMessage(){
+        var username = "prova";
+        var messaggio = "prova";
+
+        $.post( "/api/sendmessage", { username: "luchino", message: "messaggio" } );
+
+    };
+
+</script>
+-->
+</body>
+</html>

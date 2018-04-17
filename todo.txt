@@ -1,11 +1,10 @@
 BUG FIXING
--Add some funcking logs! Time has come.
--Fix for umparsable date (es. 30 aprile 2018 -> dd MMMM yyyy - why not working?)
+-Add some fucking logs! Time has come.
 -Encoding mail UTF-8
 
 EVOLUTION
--Private Message System, input text & send button. With checkbox for telegram and mail selector. Move data-content into another html file!
+-Restore JS and CSS external file, better management of private message, formatting, code and own method.
+-Add table for private messaging only, add a method to see log of conversation.
 -Use something nicer like bootstrap for fe
--Move to SpringBoot 2
 -Check who is connected by crossing information from access page and history page for user
 -Use some cool netflix api, like zuul hystrix etc..

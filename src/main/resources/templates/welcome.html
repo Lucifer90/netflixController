@@ -6,11 +6,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type='text/javascript' src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" />
+    <script type="text/javascript" th:src="@{../../js/sendMessage.js}"></script>
     <title>Benvenuto!</title>
 </head>
 <body>
+
+
 <h1>Grafico Pagamenti</h1>
 
 <div style="max-width: 100%; max-height: 100%">
@@ -105,14 +107,11 @@
             <td>
                 <input type="hidden" name="email" th:value="${user.mail}" />
                 <!--button class="toDevelope" style="height: 100%; width: 100%; background-color: green;'"><b>Invia Messaggio</b></button-->
-                <button class="btn btn-large btn-danger" data-html="true" data-toggle="popover"
-                        data-content='<form><input name="message" type="text"/><input name="private_msg" id="private_msg" \
-                         type="button" value="Invia" /></form><script>$("#private_msg").click(function(){alert("Ciao");});</script>'
-                        data-placement="bottom" data-original-title="Messaggio Privato"> Invia messaggio privato</button>
-                <!--div class="input-group">
-                    <input class="form-control" id="appendedInput" type="text" placeholder="Inserisci il tuo messaggio">
-                    <input type="button" class="btn btn-default" value="Invia" id="send_message"></span>
-                </div-->
+                <button class="btn btn-large btn-danger receiver" data-html="true" data-toggle="popover"
+                        data-templatefile="sendMessage.html" id="popover"
+                        data-placement="bottom" data-original-title="Messaggio Privato"
+                        th:value="${user.username}"
+                        >Invia messaggio privato</button>
             </td>
             <td th:text="${#dates.format(user.getRegisterDate(), 'dd MMM yyyy')}"></td>
             <td th:text="${user.importTotal}"></td>
@@ -167,12 +166,41 @@
     </div>
 <script type='text/javascript'>
 
-    $(document).ready(function() {
+    var receiver = "";
 
-        $("[data-toggle=popover]").popover();
+    $(document).ready(function() {
+        $('[data-toggle="popover"]').popover({
+            html : true,
+            content : function() {
+                return loadContent($(this).data('templatefile'))
+            }
+        });
 
     });
 
+    function sendMessagePrivate(){
+        var username = receiver;
+        var messaggio = $(this).prev().val();
+
+        $.post("/api/send", {username: username, message: messaggio});
+    }
+
+
+    $(".receiver").click(function(event){
+        receiver = event.target.value;
+    });
+
+    function loadContent(templateFile) {
+        return $('<div>').load(templateFile, function(html) {
+            parser = new DOMParser();
+            doc = parser.parseFromString(html, "text/html");
+
+            $("#private_msg").click(sendMessagePrivate);
+
+            return doc.querySelector('body').outerHTML;
+            //return doc.querySelector('h1').outerHTML + doc.querySelector('body').outerHTML;
+        })
+    }
 
 </script>
 </body>

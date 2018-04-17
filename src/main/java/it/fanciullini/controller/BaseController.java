@@ -6,6 +6,7 @@ import it.fanciullini.data.service.CommunicationLogService;
 import it.fanciullini.data.service.PaymentsLogService;
 import it.fanciullini.data.service.UserService;
 import it.fanciullini.response.PaymentsLogResponse;
+import it.fanciullini.utility.AuthToken;
 import it.fanciullini.utility.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -51,7 +52,9 @@ public class BaseController {
 	private static final String VIEW_INDEX = "index";
 	private static final String VIEW_WELCOME_PAGE = "welcome";
 	private static final String LOGIN_ERROR = "login_error";
-	private String session;
+
+	@Autowired
+	private AuthToken authToken;
 
 	private ModelMap modelStatic;
 
@@ -61,7 +64,7 @@ public class BaseController {
 		List<User> user = userService.findByUsernameAndPassword(username, password);
 		if (user.size()==1){
 			User selectedUser = user.get(0);
-			session = selectedUser.getUsername();
+			authToken.setSession(selectedUser.getUsername());
 			return "redirect:/home/"+VIEW_WELCOME_PAGE;
 		} else {
 			return LOGIN_ERROR;
@@ -90,7 +93,7 @@ public class BaseController {
 	}
 
 	private ModelMap loadValues(ModelMap model, Pageable pageRequest){
-		User selectedUser = userService.findByUserName(session);
+		User selectedUser = userService.findByUserName(authToken.getSession());
 		selectedUser.setPassword("");
 		Integer pageNumber = pageRequest.getPageNumber();
 		List<PaymentsLogResponse> paymentsLogResponse = new ArrayList<>();
@@ -119,7 +122,7 @@ public class BaseController {
 
 	@RequestMapping(value = "/sendwarning", method = RequestMethod.POST)
 	public String sendWarning(@RequestParam Long paymentId, ModelMap model){
-		User senderUser = userService.findByUserName(session);
+		User senderUser = userService.findByUserName(authToken.getSession());
 		PaymentsLog paymentsLog = paymentsLogService.findById(paymentId);
 		User poorBoy = paymentsLog.getUser();
 		String message = mailService.sendWarning(poorBoy, senderUser, paymentsLog);
