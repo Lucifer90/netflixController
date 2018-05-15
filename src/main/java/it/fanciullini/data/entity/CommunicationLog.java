@@ -12,7 +12,7 @@ import java.util.Date;
 public class CommunicationLog implements Serializable
 {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
