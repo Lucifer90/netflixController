@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 @Service
 public class NetflixScraperService {
@@ -85,7 +86,7 @@ public class NetflixScraperService {
         String data = document.getElementsByAttributeValue("data-reactid", "92").text();
         Date date = null;
         try {
-            date = new SimpleDateFormat("dd MMMM yyyy").parse(data);
+            date = new SimpleDateFormat("dd MMMM yyyy", Locale.ITALIAN).parse(data);
         } catch (ParseException e) {
             e.printStackTrace();
         }
