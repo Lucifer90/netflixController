@@ -98,7 +98,7 @@ public class NetflixScraperService {
         manageNextPayment(billingInfo);
         PaymentsLog lastPayed = paymentsLogService.getLatestPaymentByPayementStatus(StatusEnum.PAYED);
         PaymentsLog firstUnpayed = paymentsLogService.getLatestPaymentByPayementStatusNot(StatusEnum.PAYED);
-        if(lastPayed.getPaymentDate().after(billingInfo.getNextPayment())) {
+        if(DateUtils.calculateThreshold(lastPayed.getPaymentDate(), 1).after(billingInfo.getNextPayment())) {
             return;
         } else if ( firstUnpayed != null && firstUnpayed.getPaymentDate().after(billingInfo.getNextPayment())) {
             firstUnpayed.setPayed(DateUtils.checkPayedStatus(firstUnpayed, paymentWarningThreshold));
