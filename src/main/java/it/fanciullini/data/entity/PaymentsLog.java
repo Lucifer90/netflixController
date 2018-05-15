@@ -41,7 +41,7 @@ public class PaymentsLog implements Serializable
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL , fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "username", referencedColumnName = "username")
     private User user;
 
