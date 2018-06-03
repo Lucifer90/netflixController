@@ -100,7 +100,8 @@ public class NetflixScraperService {
         PaymentsLog firstUnpayed = paymentsLogService.getLatestPaymentByPayementStatusNot(StatusEnum.PAYED);
         if(DateUtils.calculateThreshold(lastPayed.getPaymentDate(), 1).after(billingInfo.getNextPayment())) {
             return;
-        } else if ( firstUnpayed != null && firstUnpayed.getPaymentDate().after(billingInfo.getNextPayment())) {
+        } else if ( firstUnpayed != null
+                && firstUnpayed.getPaymentDate().toInstant().equals(billingInfo.getNextPayment().toInstant())) {
             firstUnpayed.setPayed(DateUtils.checkPayedStatus(firstUnpayed, paymentWarningThreshold));
             User senderUser = userService.findByUserName("Luciferino");
             String message = mailService.sendWarning(firstUnpayed.getUser(), senderUser, firstUnpayed);
