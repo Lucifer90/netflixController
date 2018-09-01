@@ -49,4 +49,6 @@ public class ConfigBean {
     @Value("${http.billing.activity.page}")
     private String billingActivityPage = "https://www.netflix.com/BillingActivity";
 
+    private Double standardCost = 13.99;
+
 }

@@ -1,5 +1,6 @@
 package it.fanciullini.netflixapi;
 
+import it.fanciullini.config.ConfigBean;
 import it.fanciullini.data.entity.PaymentsLog;
 import it.fanciullini.data.entity.User;
 import it.fanciullini.data.service.PaymentsLogService;
@@ -35,6 +36,9 @@ public class NetflixScraperService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ConfigBean configBean;
+
     @Value("${payment.warning.threshold}")
     private Integer paymentWarningThreshold;
 
@@ -49,9 +53,9 @@ public class NetflixScraperService {
             netflixApiScraper.login();
             Document yourAccount = netflixApiScraper.getYourAccountPage();
             //NeedSome logic, but for now we cannot know the correct field.. so crack down with a porkaround
-            if (StringUtils.contains(yourAccount.body().text(), "amountRemaining")) {
-                String response = yourAccount.body().text().split("amountRemaining\":")[1].substring(0, 4);
-                String amount = response.substring(0, 2) + "." + response.substring(2);
+            if (StringUtils.contains(yourAccount.body().text(), "Il tuo credito di ")) {
+                String response = yourAccount.body().text().split("Il tuo credito di ")[1].substring(0,4);
+                String amount = response.replace(",", ".");
                 toSet = Double.parseDouble(amount);
             }
         } catch (ArrayIndexOutOfBoundsException | IOException ex){
@@ -66,7 +70,7 @@ public class NetflixScraperService {
         try {
             netflixApiScraper.login();
             Document document = netflixApiScraper.getBillingActivityPage();
-            monthlyCost = monthlyCostParser(document);
+            monthlyCost = monthlyCostParser(document); //This way he is parsing the first money amount.. the bonus
             nextPaymentDate = dateParser(document);
         } catch(IOException ex) {
             ex.printStackTrace();
@@ -83,7 +87,7 @@ public class NetflixScraperService {
     }
 
     private Date dateParser(Document document){
-        String data = document.getElementsByAttributeValue("data-reactid", "92").text();
+        String data = document.getElementsByAttributeValue("data-reactid", "94").text();
         Date date = null;
         try {
             date = new SimpleDateFormat("dd MMMM yyyy", Locale.ITALIAN).parse(data);
@@ -96,6 +100,15 @@ public class NetflixScraperService {
     public void areWeFine(){
         BillingInfo billingInfo = new BillingInfo();
         manageNextPayment(billingInfo);
+
+        StatusEnum statusPayment = StatusEnum.TOBEPAYED;
+        if (billingInfo.getCost() > billingInfo.getBonusRemnants()){
+            // Split in two payments
+            statusPayment = StatusEnum.TOBEPAYED;
+        } else {
+            statusPayment = StatusEnum.PAYED;
+        }
+
         PaymentsLog lastPayed = paymentsLogService.getLatestPaymentByPayementStatus(StatusEnum.PAYED);
         PaymentsLog firstUnpayed = paymentsLogService.getLatestPaymentByPayementStatusNot(StatusEnum.PAYED);
         if(DateUtils.calculateThreshold(lastPayed.getPaymentDate(), 1).after(billingInfo.getNextPayment())) {
@@ -107,11 +120,14 @@ public class NetflixScraperService {
             String message = mailService.sendWarning(firstUnpayed.getUser(), senderUser, firstUnpayed);
         } else {
             PaymentsLog paymentsLog = new PaymentsLog();
-            paymentsLog.setPayed(StatusEnum.TOBEPAYED);
+            paymentsLog.setPayed(statusPayment);
             paymentsLog.setQuantity(billingInfo.getCost());
             paymentsLog.setPaymentDate(billingInfo.getNextPayment());
             paymentsLog.setStartServicePeriod(billingInfo.getNextPayment());
-            paymentsLog.setEndServicePeriod(DateUtils.calculateThreshold(billingInfo.getNextPayment(), 30));
+
+            int timeToAdd = (int) Math.round((billingInfo.getCost() / configBean.getStandardCost()) * paymentWarningThreshold);
+
+            paymentsLog.setEndServicePeriod(DateUtils.calculateThreshold(billingInfo.getNextPayment(), timeToAdd));
             paymentsLog.setUser(paymentsLogService.findPayer());
             paymentsLogService.save(paymentsLog);
         }
