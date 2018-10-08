@@ -10,12 +10,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -88,7 +85,8 @@ public class PaymentsLogService
     }
 
     public User findPayer(){
-        PaymentsLog paymentsLog = paymentsLogRepository.custom();
+        Pageable pageable = PageRequest.of(0,1);
+        PaymentsLog paymentsLog = paymentsLogRepository.getPayer(pageable).get(0);
         return paymentsLog.getUser();
     }
 

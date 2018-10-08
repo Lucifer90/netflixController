@@ -80,14 +80,14 @@ public class NetflixScraperService {
     }
 
     private Double monthlyCostParser(Document document){
-        String cost = document.getElementsByAttributeValue("data-reactid", "82").text();
+        String cost = document.getElementsByAttributeValue("data-reactid", "81").text();
         int commaPosition = cost.indexOf(",");
         cost = cost.substring(commaPosition-2, commaPosition+3).replace(",", ".");
         return Double.parseDouble(cost);
     }
 
     private Date dateParser(Document document){
-        String data = document.getElementsByAttributeValue("data-reactid", "94").text();
+        String data = document.getElementsByAttributeValue("data-reactid", "90").text();
         Date date = null;
         try {
             date = new SimpleDateFormat("dd MMMM yyyy", Locale.ITALIAN).parse(data);

@@ -30,10 +30,9 @@ public interface PaymentsLogRepository extends PagingAndSortingRepository<Paymen
 
     public PaymentsLog findFirstByPayedNotOrderByPaymentDateAsc(StatusEnum statusEnum);
 
-    @Query("SELECT new PaymentsLog(paymentslog.id, paymentslog.user, paymentslog.quantity, MAX(paymentslog.paymentDate)," +
-            "paymentslog.startServicePeriod, paymentslog.endServicePeriod, paymentslog.payed) " +
-            "FROM PaymentsLog  paymentslog")
-    public PaymentsLog custom();
+    @Query("SELECT paymentslog FROM PaymentsLog paymentslog " +
+            "GROUP BY paymentslog.user ORDER BY SUM(paymentslog.quantity), MAX(id)")
+    public List<PaymentsLog> getPayer(Pageable pageable);
 
 }
 
