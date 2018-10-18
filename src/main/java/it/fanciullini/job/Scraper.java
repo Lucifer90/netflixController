@@ -22,7 +22,6 @@ public class Scraper {
 
     private static Logger logger = LogManager.getLogger();
 
-    //@Scheduled(fixedRate = 43200000, initialDelay = 5000) //ms
     @Scheduled(fixedRate = 43200000, initialDelay = 0) //ms
     public void scheduleTaskWithInitialDelay() {
         try {

@@ -87,7 +87,7 @@ public class NetflixScraperService {
     }
 
     private Date dateParser(Document document){
-        String data = document.getElementsByAttributeValue("data-reactid", "90").text();
+        String data = document.getElementsByAttributeValue("data-reactid", "94").text();
         Date date = null;
         try {
             date = new SimpleDateFormat("dd MMMM yyyy", Locale.ITALIAN).parse(data);
