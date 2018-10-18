@@ -80,7 +80,7 @@ public class NetflixScraperService {
     }
 
     private Double monthlyCostParser(Document document){
-        String cost = document.getElementsByAttributeValue("data-reactid", "81").text();
+        String cost = document.getElementsByAttributeValue("data-reactid", "82").text();
         int commaPosition = cost.indexOf(",");
         cost = cost.substring(commaPosition-2, commaPosition+3).replace(",", ".");
         return Double.parseDouble(cost);

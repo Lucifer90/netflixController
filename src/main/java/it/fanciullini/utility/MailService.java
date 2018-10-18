@@ -17,8 +17,6 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import static sun.security.x509.X509CertInfo.SUBJECT;
-
 @Data
 @Component
 public class MailService {
